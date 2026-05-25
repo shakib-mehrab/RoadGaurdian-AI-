@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+websockets
+langgraph
+langchain
+langchain-groq
+groq
+pydantic
+python-dotenv
