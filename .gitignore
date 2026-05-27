@@ -1,0 +1,30 @@
+# Python environment and cache
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local environment variables
+.env
+
+# Local databases and caches
+backend/rag/chroma_db/
+backend/rag/embeddings/cache/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Exclude plans, walkthroughs, tasks, blueprints, goals as requested
+*plan*.md
+*Plan*.md
+*walkthrough*.md
+*walkthrouhh*.md
+*task*.md
+*goal*.md
+*checklist*.md
+BluePrint.md
+Infinityfest.code-workspace
