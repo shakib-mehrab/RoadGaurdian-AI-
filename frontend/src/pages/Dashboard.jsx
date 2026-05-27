@@ -23,7 +23,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="page-container" style={{ padding: '24px 16px', background: 'var(--bg-primary)', minHeight: '92vh' }}>
+    <div className="page-container" style={{ paddingTop: '88px', paddingRight: '16px', paddingBottom: '24px', paddingLeft: '16px', background: 'var(--bg-primary)', minHeight: '92vh' }}>
       
       {/* Header Area */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, marginBottom: 24 }}>

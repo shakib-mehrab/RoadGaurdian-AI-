@@ -99,7 +99,7 @@ export default function Emergency() {
   }
 
   return (
-    <div className="page-container" style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px' }}>
+    <div className="page-container" style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '88px', paddingRight: '24px', paddingBottom: '40px', paddingLeft: '24px' }}>
       <div className="glass-card animate-float-up" style={{ width: '100%', maxWidth: 520, padding: 32, border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: 28 }}>
         
         {/* Header */}
