@@ -375,6 +375,16 @@ The system supports:
 
 ---
 
+### Deploy Frontend to Vercel
+
+1. Click the Vercel deployment link: https://vercel.com/new?teamSlug=shakera-projects
+2. Import the `zahid-frontend` directory.
+3. Set environment variables:
+   - `VITE_API_URL` → Your backend URL (e.g., Railway deployment URL)
+   - `VITE_WS_URL` → Your backend WebSocket URL (e.g., `wss://<your-backend>.railway.app/stream`)
+4. Deploy. Use the generated preview URL as the hackathon demo link.
+
+
 # 📂 Repository Structure
 
 ```text
@@ -614,8 +624,9 @@ into a single emergency coordination platform.
 
 | Member | Role                        |
 | ------ | --------------------------- |
-| Zahid  | Frontend & UX               |
-| Ema    | Backend & AI Infrastructure |
+| Zahid Hasan | Frontend & UX               |
+| Shakera Ema    | Backend & AI Infrastructure |
+| Mehrab Shakib | Researcher, Planner |
 
 ---
 
