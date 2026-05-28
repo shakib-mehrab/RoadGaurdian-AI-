@@ -268,7 +268,9 @@ export const useStore = create((set, get) => ({
               eta: metadata.eta || 'Calculating...',
               type: metadata.specialty || 'General Emergency',
               accessible: true,
-              blood: true
+              blood: true,
+              lat: metadata.lat,
+              lng: metadata.lng
             }
           ]
         })
@@ -352,6 +354,7 @@ export const useStore = create((set, get) => ({
       set(s => {
         const newHazard = {
           type: metadata?.hazard_type || 'Accident Obstruction',
+          hazard_type: metadata?.hazard_type || 'Accident Obstruction',
           severity: metadata?.severity || 'medium',
           location: metadata?.location || s.location,
         }

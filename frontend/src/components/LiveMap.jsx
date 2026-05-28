@@ -32,6 +32,17 @@ const hazardIcon   = createCustomIcon('#FF9F0A', '⚠️')
 // Default Dhaka coords
 const DEFAULT_CENTER = [23.8103, 90.4125]
 
+function MapInvalidator() {
+  const map = useMap()
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize()
+    }, 250)
+    return () => clearTimeout(timer)
+  }, [map])
+  return null
+}
+
 function FlyToLocation({ location }) {
   const map = useMap()
   useEffect(() => {
@@ -63,6 +74,7 @@ export default function LiveMap({ height = 360 }) {
         zoomControl={true}
         attributionControl={false}
       >
+        <MapInvalidator />
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="© OpenStreetMap"
