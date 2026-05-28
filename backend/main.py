@@ -22,6 +22,21 @@ app.add_middleware(
 app.include_router(api_router)
 app.include_router(websocket_router)
 
+@app.on_event("startup")
+def startup_event():
+    # Automatically seed the database on startup if the ChromaDB directory does not exist or is empty
+    CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+    CHROMA_DB_DIR = os.path.join(CURRENT_DIR, "rag", "chroma_db")
+    if not os.path.exists(CHROMA_DB_DIR) or not os.listdir(CHROMA_DB_DIR):
+        print("ChromaDB directory not found or empty. Seeding RAG database...")
+        try:
+            from backend.rag.ingest.seed_rag import seed_database
+            seed_database()
+        except Exception as e:
+            print(f"Error seeding database on startup: {e}")
+    else:
+        print("ChromaDB database already seeded.")
+
 @app.get("/")
 def read_root():
     return {"status": "running", "message": "RoadGuardian AI Backend is active."}
@@ -29,3 +44,4 @@ def read_root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
+

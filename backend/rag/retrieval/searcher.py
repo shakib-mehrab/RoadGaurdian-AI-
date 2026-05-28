@@ -1,6 +1,7 @@
 import os
 import sys
 from langchain_community.vectorstores import Chroma
+from langchain_groq import ChatGroq
 
 # Absolute paths
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -10,6 +11,15 @@ CHROMA_DB_DIR = os.path.join(BACKEND_DIR, "rag", "chroma_db")
 # Import embeddings
 sys.path.append(BACKEND_DIR)
 from rag.embeddings.model import get_embedding_model
+
+# Initialize Groq client for HyDE preprocessing
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+_hyde_llm = None
+if GROQ_API_KEY:
+    try:
+        _hyde_llm = ChatGroq(model_name="llama-3.1-8b-instant", groq_api_key=GROQ_API_KEY, temperature=0.1)
+    except Exception as e:
+        print(f"Error initializing ChatGroq for HyDE: {e}")
 
 _vector_store = None
 
@@ -35,6 +45,8 @@ def get_vector_store():
 def retrieve_guidelines(query: str, k: int = 3):
     """
     Retrieves the top k semantic chunks from the first aid/trauma Chroma DB.
+    First preprocesses the query using HyDE (Hypothetical Document Embeddings) to 
+    generate an ideal first-aid response, then searches Chroma DB with it.
     
     Transforms the raw distance score to a normalized confidence score [0.0 - 1.0].
     Returns:
@@ -51,8 +63,25 @@ def retrieve_guidelines(query: str, k: int = 3):
         # Return fallback mock guidelines if database is not seeded
         return get_offline_fallback(query)
         
-    # Search Chroma with scores (Chroma returns L2 distances)
-    results = db.similarity_search_with_score(query, k=k)
+    # --- HyDE PREPROCESSING ---
+    search_query = query
+    if _hyde_llm:
+        try:
+            hyde_prompt = (
+                "You are an emergency medical responder. Given a user's raw, panicky emergency query, "
+                "generate a brief, ideal first-aid/trauma response document or protocol text. "
+                "Focus on clinical actions, steps, and techniques. Do not include introductory or concluding conversational text. "
+                f"Query: {query}\n\nHypothetical Guide:"
+            )
+            response = _hyde_llm.invoke(hyde_prompt)
+            hypothetical_doc = response.content.strip()
+            print(f"\n[HyDE] Generated hypothetical response for RAG search:\n{hypothetical_doc}\n")
+            search_query = hypothetical_doc
+        except Exception as hyde_err:
+            print(f"[HyDE Error] Failed to generate hypothetical document: {hyde_err}. Falling back to raw query.")
+
+    # Search Chroma with scores (Chroma returns L2 distances) using the HyDE search_query
+    results = db.similarity_search_with_score(search_query, k=k)
     
     retrieved_items = []
     for doc, distance in results:

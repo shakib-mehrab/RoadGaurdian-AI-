@@ -13,3 +13,4 @@ chromadb
 sentence-transformers
 numpy
 python-multipart
+mcp

@@ -18,7 +18,7 @@ from backend.mcp.tools import find_hospital, dispatch_emergency, notify_family, 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if GROQ_API_KEY:
     try:
-        llm = ChatGroq(model_name="llama3-8b-8192", groq_api_key=GROQ_API_KEY, temperature=0.1)
+        llm = ChatGroq(model_name="llama-3.1-8b-instant", groq_api_key=GROQ_API_KEY, temperature=0.1)
     except Exception as e:
         print(f"Error initializing ChatGroq: {e}. Falling back to offline simulator mode.")
         llm = None
