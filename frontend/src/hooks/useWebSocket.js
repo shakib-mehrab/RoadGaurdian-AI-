@@ -1,7 +1,24 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { useStore } from '../store/useStore'
 
-const WS_URL = 'ws://localhost:8000/stream'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:8000';
+
+const getWsUrl = (url) => {
+  if (url.startsWith('http://')) {
+    return url.replace('http://', 'ws://') + '/stream';
+  }
+  if (url.startsWith('https://')) {
+    return url.replace('https://', 'wss://') + '/stream';
+  }
+  if (url.startsWith('ws://') || url.startsWith('wss://')) {
+    return url.endsWith('/stream') ? url : url + '/stream';
+  }
+  const isDev = url.startsWith('localhost') || url.startsWith('127.0.0.1');
+  const protocol = isDev ? 'ws://' : (window.location.protocol === 'https:' ? 'wss://' : 'ws://');
+  return `${protocol}${url}/stream`;
+};
+
+const WS_URL = getWsUrl(BACKEND_URL);
 
 export function useWebSocket() {
   const wsRef = useRef(null)

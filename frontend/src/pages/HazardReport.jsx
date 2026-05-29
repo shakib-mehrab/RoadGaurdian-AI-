@@ -30,8 +30,19 @@ export default function HazardReport() {
     formData.append('lng', lng)
     formData.append('description', description || 'Active road anomaly')
 
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'localhost:8000';
+    const getHttpUrl = (url) => {
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+      }
+      const isDev = url.startsWith('localhost') || url.startsWith('127.0.0.1');
+      const protocol = isDev ? 'http://' : (window.location.protocol === 'https:' ? 'https://' : 'http://');
+      return `${protocol}${url}`;
+    };
+    const API_URL = getHttpUrl(BACKEND_URL);
+
     try {
-      const response = await fetch('http://localhost:8000/hazard-detect', {
+      const response = await fetch(`${API_URL}/hazard-detect`, {
         method: 'POST',
         body: formData,
       })
