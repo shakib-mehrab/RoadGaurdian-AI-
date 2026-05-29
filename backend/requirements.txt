@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+websockets
+langgraph
+langchain
+langchain-groq
+langchain-community
+langchain-huggingface
+groq
+pydantic
+python-dotenv
+chromadb
+sentence-transformers
+numpy
+python-multipart
+mcp
