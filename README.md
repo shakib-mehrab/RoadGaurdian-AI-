@@ -1,12 +1,3 @@
----
-title: RoadGuardian AI
-emoji: 🚑
-colorFrom: red
-colorTo: black
-sdk: docker
-app_port: 7860
----
-
 # 🚑 RoadGuardian AI
 
 ### Autonomous Emergency Intelligence for Inclusive Road Safety
